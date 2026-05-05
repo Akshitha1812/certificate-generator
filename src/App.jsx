@@ -148,7 +148,7 @@ function App() {
     if (containerRef.current) {
       const containerWidth = containerRef.current.clientWidth;
       const scale = containerWidth / canvas.width;
-      setCanvasScale(scale < 1 ? scale : 1);
+      setCanvasScale(scale);
     }
   };
 
@@ -156,12 +156,20 @@ function App() {
     const handleResize = () => {
       if (canvasRef.current && containerRef.current) {
         const scale = containerRef.current.clientWidth / canvasRef.current.width;
-        setCanvasScale(scale < 1 ? scale : 1);
+        setCanvasScale(scale);
       }
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handleDragStart = (e, element) => {
+    setDraggingElement(element);
+  };
+
+  const handleDragEnd = () => {
+    setDraggingElement(null);
+  };
 
   const handleDrag = (e) => {
     if (e.buttons !== 1 || !draggingElement) return;
